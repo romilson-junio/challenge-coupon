@@ -4,6 +4,7 @@ import com.challenge.coupon.domain.model.Coupon;
 import com.challenge.coupon.infrastructure.persistence.entity.CouponEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.ObjectFactory;
 
 @Mapper(componentModel = "spring")
 public interface CouponEntityMapper {
@@ -13,9 +14,18 @@ public interface CouponEntityMapper {
     @Mapping(target = "expirationDate", expression = "java(domain.getExpirationDate().getValue())")
     CouponEntity entity(Coupon domain);
 
-    @Mapping(target = "code", expression = "java(CouponCode.of(entity.getCode()))")
-    @Mapping(target = "description", expression = "java(Description.of(entity.getDescription()))")
-    @Mapping(target = "discountValue", expression = "java(DiscountValue.of(entity.getDiscountValue()))")
-    @Mapping(target = "expirationDate", expression = "java(ExpirationDate.of(entity.getExpirationDate()))")
+    @ObjectFactory
+    default Coupon restore(CouponEntity entity) {
+        return Coupon.restore(
+                entity.getId(),
+                entity.getCode(),
+                entity.getDescription(),
+                entity.getDiscountValue(),
+                entity.getExpirationDate(),
+                entity.getStatus(),
+                entity.isPublished(),
+                entity.isRedeemed()
+        );
+    }
     Coupon domain(CouponEntity entity);
 }

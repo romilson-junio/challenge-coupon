@@ -5,6 +5,7 @@ import com.challenge.coupon.domain.vo.CouponCode;
 import com.challenge.coupon.domain.vo.Description;
 import com.challenge.coupon.domain.vo.DiscountValue;
 import com.challenge.coupon.domain.vo.ExpirationDate;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Coupon {
 
     private final UUID id;
@@ -42,6 +43,28 @@ public class Coupon {
                 CouponStatus.ACTIVE,
                 published,
                 false);
+    }
+
+    public static Coupon restore(
+            UUID id,
+            String code,
+            String description,
+            Double discount,
+            LocalDateTime expiration,
+            CouponStatus status,
+            boolean published,
+            boolean redeemed
+    ) {
+        return new Coupon(
+                id,
+                CouponCode.of(code),
+                Description.of(description),
+                DiscountValue.of(discount),
+                ExpirationDate.of(expiration),
+                status,
+                published,
+                redeemed
+        );
     }
 
     public void delete() {

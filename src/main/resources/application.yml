@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: Coupon
+  datasource:
+    url: jdbc:h2:mem:coupon-db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        webAllowOthers: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+cors:
+  allowed-origins: "*"
